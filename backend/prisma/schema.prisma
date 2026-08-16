@@ -1,0 +1,81 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  candidate
+  admin
+}
+
+model User {
+  id             String         @id @default(uuid())
+  email          String         @unique
+  passwordHash   String?        @map("password_hash")
+  name           String
+  oauthProvider  String?        @map("oauth_provider")
+  oauthId        String?        @map("oauth_id")
+  role           Role           @default(candidate)
+  createdAt      DateTime       @default(now()) @map("created_at")
+  refreshTokens  RefreshToken[]
+  resumes        Resume[]
+
+  @@unique([oauthProvider, oauthId])
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  revoked   Boolean  @default(false)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model Resume {
+  id          String           @id @default(uuid())
+  userId      String           @map("user_id")
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileUrl     String           @map("file_url")
+  rawText     String?          @map("raw_text") @db.Text
+  uploadedAt  DateTime         @default(now()) @map("created_at")
+  chunks      ResumeChunk[]
+  analyses    ResumeAnalysis[]
+
+  @@index([userId])
+  @@map("resumes")
+}
+
+model ResumeChunk {
+  id          String   @id @default(uuid())
+  resumeId    String   @map("resume_id")
+  resume      Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  chunkText   String   @map("chunk_text") @db.Text
+  contentHash String?  @map("content_hash")
+
+  @@index([resumeId])
+  @@map("resume_chunks")
+}
+
+model ResumeAnalysis {
+  id          String   @id @default(uuid())
+  resumeId    String   @map("resume_id")
+  resume      Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  atsScore    Int?     @map("ats_score")
+  strengths   Json?
+  weaknesses  Json?
+  skillGaps   Json?    @map("skill_gaps")
+  suggestions Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([resumeId])
+  @@map("resume_analyses")
+}
