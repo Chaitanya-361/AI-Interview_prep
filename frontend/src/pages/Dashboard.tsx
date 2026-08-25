@@ -1,5 +1,6 @@
 // frontend/src/pages/Dashboard.tsx
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../lib/api';
@@ -61,7 +62,7 @@ export default function Dashboard() {
             
             {/* Top Navigation Bar */}
             <div className="max-w-4xl mx-auto flex justify-between items-center mb-12">
-                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-indigo-400">
+                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-linear-to-r from-purple-400 to-indigo-400">
                     Dashboard
                 </h1>
                 <div className="flex items-center gap-4">
@@ -74,6 +75,45 @@ export default function Dashboard() {
                     </button>
                 </div>
             </div>
+
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 mb-12">
+                <div className="bg-[#1e1e2d] border border-gray-800 rounded-xl p-8 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h2 className="text-2xl font-bold text-white mb-2">Ready to practice?</h2>
+                        <p className="text-gray-400 mb-6">Start an AI mock interview tailored to your resume.</p>
+                    </div>
+                    <Link
+                        to="/interview/setup"
+                        className="inline-block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-blue-500/30 transition-all transform hover:-translate-y-1">
+                        Start Mock Interview &rarr;
+                    </Link>
+                </div>
+
+                <div className="bg-[#1e1e2d] border border-gray-800 rounded-xl p-8 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h2 className="text-2xl font-bold text-white mb-2">Need a Cover Letter?</h2>
+                        <p className="text-gray-400 mb-6">Instantly generate a tailored cover letter.</p>
+                    </div>
+                    <Link
+                        to="/cover-letter"
+                        className="inline-block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-green-500/30 transition-all transform hover:-translate-y-1">
+                        Generate Cover Letter &rarr;
+                    </Link>
+                </div>
+
+                <div className="bg-[#1e1e2d] border border-gray-800 rounded-xl p-8 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h2 className="text-2xl font-bold text-white mb-2">Your Progress</h2>
+                        <p className="text-gray-400 mb-6">Review your past resumes and interview scorecards.</p>
+                    </div>
+                    <Link
+                        to="/history"
+                        className="inline-block text-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-purple-500/30 transition-all transform hover:-translate-y-1">
+                        View History &rarr;
+                    </Link>
+                </div>
+            </div>
+
             
             {/* The Main Upload Card */}
             <div className="max-w-xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-3xl shadow-2xl">
@@ -126,7 +166,7 @@ export default function Dashboard() {
                     className={`w-full mt-8 py-3.5 rounded-xl font-semibold transition-all shadow-lg 
                         ${isUploading || !file 
                             ? 'bg-gray-700 text-gray-500 cursor-not-allowed' 
-                            : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_25px_rgba(124,58,237,0.5)]'
+                            : 'bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_25px_rgba(124,58,237,0.5)]'
                         }`}
                 >
                     {isUploading ? 'Uploading & Parsing...' : 'Analyze My Resume'}

@@ -5,6 +5,12 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import AuthPage from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Analysis from './pages/Analysis';
+import InterviewSetup from './pages/InterviewSetup';
+import InterviewRoom from './pages/InterviewRoom';
+import InterviewScorecard from './pages/InterviewScorecard';
+import History from './pages/History';
+import CoverLetterGenerator from './pages/CoverLetterGenerator';
+
 
 // A special component that checks if the user is authenticated.
 // If they are NOT logged in, it redirects them to '/auth'
@@ -55,6 +61,49 @@ function AppRoutes() {
                 element={
                     <ProtectedRoute>
                         <Analysis />
+                    </ProtectedRoute>
+                } 
+            />
+
+            <Route 
+                path="/interview/setup" 
+                element={
+                    <ProtectedRoute>
+                        <InterviewSetup />
+                    </ProtectedRoute>
+                } 
+            />
+            <Route 
+                path="/interview/:id" 
+                element={
+                    <ProtectedRoute>
+                        <InterviewRoom />
+                    </ProtectedRoute>
+                } 
+            />
+            <Route 
+                path="/interview/:id/scorecard" 
+                element={
+                    <ProtectedRoute>
+                        <InterviewScorecard />
+                    </ProtectedRoute>
+                } 
+            />
+
+            <Route 
+                path="/history" 
+                element={
+                    <ProtectedRoute>
+                        <History />
+                    </ProtectedRoute>
+                } 
+            />
+
+            <Route 
+                path="/cover-letter" 
+                element={
+                    <ProtectedRoute>
+                        <CoverLetterGenerator />
                     </ProtectedRoute>
                 } 
             />

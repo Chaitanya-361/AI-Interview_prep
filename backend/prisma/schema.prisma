@@ -22,6 +22,8 @@ model User {
   createdAt      DateTime       @default(now()) @map("created_at")
   refreshTokens  RefreshToken[]
   resumes        Resume[]
+  interviewSessions InterviewSession[]
+  coverLetters   CoverLetter[]
 
   @@unique([oauthProvider, oauthId])
   @@map("users")
@@ -49,6 +51,8 @@ model Resume {
   uploadedAt  DateTime         @default(now()) @map("created_at")
   chunks      ResumeChunk[]
   analyses    ResumeAnalysis[]
+  interviewSessions InterviewSession[]
+  coverLetters CoverLetter[]
 
   @@index([userId])
   @@map("resumes")
@@ -78,4 +82,65 @@ model ResumeAnalysis {
 
   @@index([resumeId])
   @@map("resume_analyses")
+}
+
+model InterviewSession {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resumeId    String?  @map("resume_id")
+  resume      Resume?  @relation(fields: [resumeId], references: [id], onDelete: SetNull)
+  company     String
+  role        String
+  difficulty  String
+  type        String
+  status      String   @default("ongoing") // ongoing, completed
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  messages    InterviewMessage[]
+  scorecard   InterviewScorecard?
+
+  @@index([userId])
+  @@map("interview_sessions")
+}
+
+model InterviewMessage {
+  id          String   @id @default(uuid())
+  sessionId   String   @map("session_id")
+  session     InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role        String   // system, user, assistant
+  content     String   @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([sessionId])
+  @@map("interview_messages")
+}
+
+model InterviewScorecard {
+  id             String   @id @default(uuid())
+  sessionId      String   @unique @map("session_id")
+  session        InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  overallScore   Int      @map("overall_score")
+  communication  Int
+  technical      Int
+  feedback       Json     // structured feedback: strengths, areas to improve, etc.
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("interview_scorecards")
+}
+
+model CoverLetter {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resumeId       String?  @map("resume_id")
+  resume         Resume?  @relation(fields: [resumeId], references: [id], onDelete: SetNull)
+  jobDescription String   @map("job_description") @db.Text
+  content        String   @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("cover_letters")
 }

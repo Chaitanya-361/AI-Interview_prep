@@ -5,9 +5,9 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
 
 
     // We set up default headers. If the request isn't sending FormData (like files), we default to JSON.
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
         ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
-        ...options.headers,
+        ...(options.headers as Record<string, string>),
     };
 
     if(token) {

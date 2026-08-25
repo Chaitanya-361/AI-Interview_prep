@@ -1,5 +1,5 @@
 // frontend/src/pages/Analysis.tsx
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../lib/api';
 

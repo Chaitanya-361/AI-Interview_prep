@@ -34,7 +34,7 @@ router.post('/register', async (req, res) => {
         const accessToken = jwt.sign(
             { sub: user.id, role: user.role },
             tokenSecret,
-            { expiresIn: '15m' }
+            { expiresIn: '7d' }
         );
 
         return res.status(201).json({
@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
         const accessToken = jwt.sign(
             { sub: user.id, role: user.role },
             tokenSecret,
-            { expiresIn: '15m' }
+            { expiresIn: '7d' }
         );
 
         return res.status(200).json({

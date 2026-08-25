@@ -89,11 +89,15 @@ router.post('/upload', authenticateToken, upload.single('resume'), async (req: A
 
 router.post('/:id/analyze', authenticateToken, async (req: AuthenticatedRequest, res) => {
     try{
-        const resumeId = req.params.id;
+        const resumeId = req.params.id as string;
         const userId = req.user?.id;
 
-        if(!userId){
-            return res.status(401).json({error: 'Unauthorized'});
+        if (!userId) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        if (!resumeId || typeof resumeId !== 'string') {
+            return res.status(400).json({ error: 'Valid resume ID is required' });
         }
 
         const resume = await prisma.resume.findFirst({
@@ -105,6 +109,19 @@ router.post('/:id/analyze', authenticateToken, async (req: AuthenticatedRequest,
 
         if(!resume || !resume.rawText){
             return res.status(404).json({error: 'Resume not found or contains no readable text'});
+        }
+
+        // Check if we already analyzed this resume
+        const existingAnalysis = await prisma.resumeAnalysis.findFirst({
+            where: { resumeId: resume.id },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        if (existingAnalysis) {
+            return res.status(200).json({
+                message: 'Existing resume analysis retrieved',
+                analysis: existingAnalysis,
+            });
         }
         
         const textChunks = chunkText(resume.rawText, 500, 50);
@@ -148,8 +165,23 @@ router.post('/:id/analyze', authenticateToken, async (req: AuthenticatedRequest,
     }
 });
 
+// Delete a resume and its analysis
+router.delete('/:id', authenticateToken, async (req: AuthenticatedRequest, res) => {
+    try {
+        const resumeId = req.params.id as string;
+        const userId = req.user?.id;
+        if (!resumeId || !userId) return res.status(400).json({ error: 'Valid ID required' });
+
+        const resume = await prisma.resume.findUnique({ where: { id: resumeId } });
+        if (!resume) return res.status(404).json({ error: 'Resume not found' });
+        if (resume.userId !== userId) return res.status(403).json({ error: 'Forbidden' });
+
+        await prisma.resume.delete({ where: { id: resumeId } });
+        res.json({ success: true });
+    } catch (error: any) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete resume' });
+    }
+});
+
 export default router;
-
-
-
-

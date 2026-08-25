@@ -7,6 +7,9 @@ dotenv.config();
 
 import authRoutes from './routes/auth.js';
 import resumeRoutes from './routes/resume.js';
+import interviewRoutes from './routes/interview.js';
+import userRoutes from './routes/user.js';
+import coverLetterRoutes from './routes/coverLetter.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,6 +20,9 @@ app.use(express.json());                // used to parse incoming requests with 
 
 app.use('/api/auth', authRoutes);
 app.use('/api/resume', resumeRoutes);
+app.use('/api/interview', interviewRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/cover-letter', coverLetterRoutes);
 
 app.get('/api/health', (req, res) => {
     res.json({
