@@ -3,10 +3,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 import authRoutes from './routes/auth.js';
 import resumeRoutes from './routes/resume.js';
-
-dotenv.config()
 
 const app = express();
 const PORT = process.env.PORT || 5000;

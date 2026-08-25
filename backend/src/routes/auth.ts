@@ -47,8 +47,9 @@ router.post('/register', async (req, res) => {
             accessToken,
         });
 
-    }catch(error){
-        return res.status(500).json({ error: 'Internal server error' });
+    }catch(error: any){
+        console.log('Registration Error:', error);
+        return res.status(500).json({error: error.message || 'Internal server error'});
     }
 });
 
@@ -90,8 +91,9 @@ router.post('/login', async (req, res) => {
             accessToken,
         });
 
-    }catch(error){
-        return res.status(500).json({error: 'Internal server error'});
+    }catch(error: any){
+        console.log('Registration Error:', error);
+        return res.status(500).json({error: error.message || 'Internal server error'});
     }
 });
 

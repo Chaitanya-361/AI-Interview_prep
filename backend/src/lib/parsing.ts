@@ -1,7 +1,11 @@
-// @ts-ignore
+// Node ES Modules ("type": "module") require createRequire to safely 
+// load legacy CommonJS packages (like pdf-parse) that lack default ES exports
 
-import pdfParse from 'pdf-parse';  // its built as a commonjs module so need to write ts-ignore
+import { createRequire } from 'module';
 import mammoth from 'mammoth';
+
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
 
 export interface ExtractedResumeText {
   text: string;
