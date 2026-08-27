@@ -40,7 +40,13 @@ router.get('/history', authenticateToken, async (req: AuthenticatedRequest, res)
             orderBy: { createdAt: 'desc' }
         });
 
-        res.json({ interviews, resumeAnalyses, coverLetters });
+        // Fetch all user resumes (even if not analyzed yet)
+        const resumes = await prisma.resume.findMany({
+            where: { userId },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        res.json({ interviews, resumeAnalyses, coverLetters, resumes });
     } catch (error: any) {
         console.error('History fetch error:', error);
         res.status(500).json({ error: 'Failed to fetch history' });
