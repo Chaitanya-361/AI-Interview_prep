@@ -15,5 +15,34 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  backend:
+    image: ${BACKEND_IMAGE:-interview-prep-backend}
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: interview_prep_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:POSTGRES_PASSWORD@postgres:5432/interview_prep_db
+      - PORT=5000
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres
+
+  frontend:
+    image: ${FRONTEND_IMAGE:-interview-prep-frontend}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: interview_prep_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
 volumes:
-  postgres_data: 
+  postgres_data:
