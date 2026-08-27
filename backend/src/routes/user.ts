@@ -43,7 +43,7 @@ router.get('/history', authenticateToken, async (req: AuthenticatedRequest, res)
         // Fetch all user resumes (even if not analyzed yet)
         const resumes = await prisma.resume.findMany({
             where: { userId },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { uploadedAt: 'desc' }
         });
 
         res.json({ interviews, resumeAnalyses, coverLetters, resumes });
