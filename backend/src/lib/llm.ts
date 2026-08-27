@@ -14,7 +14,7 @@ export interface ResumeAnalysisResult {
 }
 
 const getGeminiClient = () => {
-    const apiKey = process.env.GEMINI_API_KEY || '';
+    const apiKey = (process.env.GEMINI_API_KEY || '').trim();
 
     if(!apiKey || apiKey === 'your_gemini_api_key_here') {
         throw new Error('GEMINI_API_KEY is not configured');
