@@ -19,9 +19,14 @@ export default function CoverLetterGenerator() {
     const fetchResumes = async () => {
       try {
         const data = await apiFetch('user/history');
-        if (data.resumes) {
-          setResumes(data.resumes);
-          if (data.resumes.length > 0) setSelectedResumeId(data.resumes[0].id);
+        if (data.resumeAnalyses) {
+          const uniqueResumes = data.resumeAnalyses.map((a: any) => a.resume);
+          // deduplicate if multiple analyses for same resume (though structure usually has 1:many)
+          const unique = Array.from(new Set(uniqueResumes.map((a: any) => a.id)))
+            .map(id => uniqueResumes.find((a: any) => a.id === id));
+          
+          setResumes(unique);
+          if (unique.length > 0) setSelectedResumeId(unique[0].id);
         }
       } catch (err) {
         console.error('Failed to load resumes for cover letter generator');
