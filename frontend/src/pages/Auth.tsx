@@ -1,4 +1,3 @@
-// frontend/src/pages/Auth.tsx
 import React, { useState } from 'react';
 import { apiFetch } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
@@ -36,8 +35,6 @@ export default function AuthPage() {
             // On success, we update the global React state and save the token!
             login(data.user, data.accessToken);
             
-            // Usually we would redirect to the dashboard here, but we will add routing in Step 3!
-
         } catch (err: any) {
             // Display any error sent by the backend (e.g. "Email already in use")
             setError(err.message);
@@ -45,20 +42,29 @@ export default function AuthPage() {
     }
 
     return (
-        // A full-screen container with a sleek, dark gradient background
-        <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-indigo-950 to-black text-white">
+        <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] text-gray-900">
             
-            {/* The Glassmorphism card container */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl w-full max-w-md">
+            {/* The form container */}
+            <div className="bg-white border border-gray-100 p-10 rounded-3xl shadow-sm w-full max-w-md">
                 
+                {/* Logo / Icon Area */}
+                <div className="flex justify-center mb-6">
+                    <div className="w-14 h-14 bg-gray-900 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-sm">
+                        I
+                    </div>
+                </div>
+
                 {/* Dynamic Title */}
-                <h1 className="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-linear-to-r from-purple-400 to-indigo-400">
+                <h1 className="text-3xl font-extrabold text-center mb-2 text-gray-900">
                     {isLogin ? 'Welcome Back' : 'Create Account'}
                 </h1>
+                <p className="text-center text-gray-500 mb-8 font-medium">
+                    {isLogin ? 'Enter your details to access your dashboard.' : 'Sign up to start practicing.'}
+                </p>
                 
                 {/* Error message display */}
                 {error && (
-                    <div className="bg-red-500/20 border border-red-500/50 text-red-200 p-3 rounded-lg mb-4 text-sm text-center">
+                    <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-xl mb-6 text-sm text-center font-medium">
                         {error}
                     </div>
                 )}
@@ -69,12 +75,12 @@ export default function AuthPage() {
                     {/* Show Name field ONLY if the user is registering */}
                     {!isLogin && (
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1 ml-1">Name</label>
+                            <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">Name</label>
                             <input 
                                 type="text" 
                                 value={name} 
                                 onChange={(e) => setName(e.target.value)} 
-                                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                                className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all font-medium"
                                 placeholder="John Doe"
                                 required 
                             />
@@ -82,41 +88,41 @@ export default function AuthPage() {
                     )}
                     
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1 ml-1">Email</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">Email</label>
                         <input 
                             type="email" 
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
-                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                            className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all font-medium"
                             placeholder="you@example.com"
                             required 
                         />
                     </div>
                     
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1 ml-1">Password</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-1.5 ml-1">Password</label>
                         <input 
                             type="password" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
-                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                            className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all font-medium"
                             placeholder="••••••••"
                             required 
                         />
                     </div>
                     
-                    <button type="submit" className="w-full bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold py-3.5 rounded-xl mt-2 transition-all shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_25px_rgba(124,58,237,0.5)]">
+                    <button type="submit" className="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 rounded-xl mt-4 transition-all shadow-sm hover:-translate-y-0.5">
                         {isLogin ? 'Log In' : 'Sign Up'}
                     </button>
                 </form>
 
                 {/* The Toggle Button */}
-                <p className="text-center text-sm text-gray-400 mt-6">
+                <p className="text-center text-sm text-gray-500 mt-8 font-medium">
                     {isLogin ? "Don't have an account? " : "Already have an account? "}
                     <button 
                         type="button"
                         onClick={() => setIsLogin(!isLogin)} 
-                        className="text-purple-400 hover:text-purple-300 font-medium hover:underline underline-offset-4 transition-all"
+                        className="text-gray-900 hover:text-gray-900 font-bold hover:underline underline-offset-4 transition-all"
                     >
                         {isLogin ? 'Sign up' : 'Log in'}
                     </button>

@@ -10,6 +10,7 @@ import InterviewRoom from './pages/InterviewRoom';
 import InterviewScorecard from './pages/InterviewScorecard';
 import History from './pages/History';
 import CoverLetterGenerator from './pages/CoverLetterGenerator';
+import Layout from './components/Layout';
 
 
 // A special component that checks if the user is authenticated.
@@ -19,7 +20,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     if (!token) {
         return <Navigate to="/auth" replace />;
     }
-    return <>{children}</>;
+    return <Layout>{children}</Layout>;
 }
 
 // A special component that prevents logged-in users from seeing the Auth page again.

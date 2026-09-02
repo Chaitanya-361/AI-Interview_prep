@@ -131,18 +131,18 @@ export default function InterviewRoom() {
     }
   };
 
-  if (loading) return <div className="text-center mt-20 text-gray-400">Loading interview...</div>;
+  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading interview...</div>;
 
   return (
-    <div className="max-w-4xl mx-auto h-[85vh] flex flex-col bg-[#1e1e2d] border border-gray-800 rounded-xl overflow-hidden mt-6 shadow-2xl">
+    <div className="max-w-4xl mx-auto h-[85vh] flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden mt-6 shadow-sm">
       
       {/* Header */}
-      <div className="bg-[#151521] border-b border-gray-800 p-4 flex justify-between items-center">
+      <div className="bg-gray-50 border-b border-gray-200 p-4 flex justify-between items-center">
         <div>
-          <h2 className="text-lg font-bold text-white">{session?.company} Interview</h2>
-          <p className="text-sm text-gray-400">{session?.role} • {session?.difficulty} • {session?.type}</p>
+          <h2 className="text-lg font-bold text-gray-900">{session?.company} Interview</h2>
+          <p className="text-sm text-gray-500 font-medium">{session?.role} • {session?.difficulty} • {session?.type}</p>
         </div>
-        <button onClick={endInterview} className="bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-lg font-medium transition-colors">
+        <button onClick={endInterview} className="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg font-bold transition-colors border border-red-100 hover:border-red-600">
           End Interview
         </button>
       </div>
@@ -151,10 +151,10 @@ export default function InterviewRoom() {
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] rounded-2xl p-4 ${
+            <div className={`max-w-[80%] rounded-2xl p-4 shadow-sm ${
               msg.role === 'user' 
-                ? 'bg-blue-600 text-white rounded-br-none' 
-                : 'bg-gray-800 text-gray-200 rounded-bl-none border border-gray-700'
+                ? 'bg-gray-900 text-white rounded-br-none font-medium' 
+                : 'bg-gray-50 text-gray-800 rounded-bl-none border border-gray-200'
             }`}>
               {msg.content}
             </div>
@@ -162,7 +162,7 @@ export default function InterviewRoom() {
         ))}
         {isAiTyping && (
           <div className="flex justify-start">
-            <div className="bg-gray-800 rounded-2xl rounded-bl-none border border-gray-700 p-4 text-gray-400">
+            <div className="bg-gray-50 rounded-2xl rounded-bl-none border border-gray-200 p-4 text-gray-500 shadow-sm font-medium">
               <span className="animate-pulse">Typing...</span>
             </div>
           </div>
@@ -171,13 +171,15 @@ export default function InterviewRoom() {
       </div>
 
       {/* Input Area */}
-      <div className="bg-[#151521] p-4 border-t border-gray-800">
+      <div className="bg-white p-4 border-t border-gray-200">
         <form onSubmit={sendMessage} className="flex gap-3">
           <button
             type="button"
             onClick={toggleListen}
-            className={`p-4 rounded-xl flex items-center justify-center transition-colors ${
-              isListening ? 'bg-red-500 animate-pulse text-white' : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'
+            className={`p-4 rounded-xl flex items-center justify-center transition-colors border ${
+              isListening 
+                ? 'bg-red-500 border-red-600 animate-pulse text-white shadow-sm' 
+                : 'bg-gray-50 border-gray-200 text-gray-500 hover:text-gray-900 hover:bg-gray-100'
             }`}
             title="Use voice input"
           >
@@ -192,13 +194,13 @@ export default function InterviewRoom() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={isListening ? "Listening..." : "Type your answer..."}
-            className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 text-white focus:outline-none focus:border-blue-500 transition-colors"
+            className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 text-gray-900 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-colors font-medium"
           />
           
           <button
             type="submit"
             disabled={!input.trim() || isAiTyping}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 rounded-xl font-medium transition-colors disabled:opacity-50"
+            className="bg-gray-900 hover:bg-black text-white px-8 rounded-xl font-bold transition-colors disabled:opacity-50 disabled:hover:bg-gray-900 shadow-sm"
           >
             Send
           </button>
